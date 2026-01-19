@@ -1,158 +1,69 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const CalApp());
+  runApp(const MyApp());
 }
 
-// Main App
-class CalApp extends StatelessWidget {
-  const CalApp({super.key});
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false,
       home: CalScreen(),
     );
   }
 }
 
-// Calculator Screen
 class CalScreen extends StatefulWidget {
   const CalScreen({super.key});
 
   @override
-  State<CalScreen> createState() => _CalScreenState();
+  State<CalScreen> createState() => _CalScreen();
 }
 
-// State Class
-class _CalScreenState extends State<CalScreen> {
-  String display = "";     // what user sees
+// subclass create
+class _CalScreen extends State<CalScreen> {
+  String output = '0';
   double num1 = 0;
   double num2 = 0;
-  String operand = "";
-
-  void buttonPressed(String text) {
-    setState(() {
-      // Clear
-      if (text == "C") {
-        display = "";
-        num1 = 0;
-        num2 = 0;
-        operand = "";
-      }
-
-      // Operators
-      else if (text == "+" || text == "-" || text == "x" || text == "÷") {
-        num1 = double.parse(display);
-        operand = text;
-        display = "$display $text ";
-      }
-
-      // Equal
-      else if (text == "=") {
-        List<String> parts = display.split(" ");
-        num2 = double.parse(parts[2]);
-
-        double result = 0;
-        if (operand == "+") result = num1 + num2;
-        if (operand == "-") result = num1 - num2;
-        if (operand == "x") result = num1 * num2;
-        if (operand == "÷") result = num1 / num2;
-
-        display = result.toString();
-      }
-
-      // Numbers
-      else {
-        display += text;
-      }
-    });
-  }
-
-  Widget buildButton(String text) {
-    return Expanded(
-      child: Container(
-        margin: const EdgeInsets.all(6),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.grey,
-            padding: const EdgeInsets.all(22),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
-            ),
-          ),
-          onPressed: () => buttonPressed(text),
-          child: Text(
-            text,
-            style: const TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
+  String operand = ' ';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[900],
       appBar: AppBar(
         title: const Text(
-          "Calculator",
-          style: TextStyle(color: Colors.black),
+          "CalApp",
+          style: TextStyle(fontSize: 24),
         ),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
       ),
-      body: Column(
-        children: [
-          // Display
-          Container(
-            alignment: Alignment.centerRight,
+    );
+  }
+
+  Widget buildButton(String buttonText, Color buttonColor) {
+    return Expanded(
+      child: Container(
+        margin: const EdgeInsets.all(8),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
             padding: const EdgeInsets.all(24),
-            child: Text(
-              display.isEmpty ? "0" : display,
-              style: const TextStyle(
-                fontSize: 36,
-                fontWeight: FontWeight.bold,
-                color: Colors.grey,
-              ),
+            backgroundColor: buttonColor,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
             ),
           ),
-
-          // Buttons (4 per row)
-          Row(children: [
-            buildButton("7"),
-            buildButton("8"),
-            buildButton("9"),
-            buildButton("÷"),
-          ]),
-          Row(children: [
-            buildButton("4"),
-            buildButton("5"),
-            buildButton("6"),
-            buildButton("x"),
-          ]),
-          Row(children: [
-            buildButton("1"),
-            buildButton("2"),
-            buildButton("3"),
-            buildButton("-"),
-          ]),
-          Row(children: [
-            buildButton("C"),
-            buildButton("0"),
-            buildButton("="),
-            buildButton("+"),
-          ]),
-        ],
+          onPressed: () {},
+          child: Text(
+            buttonText,
+            style: const TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+            ),
+          ),
+        ),
       ),
     );
   }
 }
-
-
